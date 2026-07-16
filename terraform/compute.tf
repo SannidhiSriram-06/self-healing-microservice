@@ -38,21 +38,31 @@ EOF
 
 resource "aws_autoscaling_group" "app" {
   desired_capacity = 2
-  max_size         = 2
+  max_size         = 4
   min_size         = 2
-
   vpc_zone_identifier = [
     aws_subnet.public_a.id,
     aws_subnet.public_b.id
   ]
-
   target_group_arns = [aws_lb_target_group.app.arn]
-
   launch_template {
     id      = aws_launch_template.app.id
     version = "$Latest"
   }
-
   health_check_type         = "ELB"
   health_check_grace_period = 300
+}
+
+resource "aws_autoscaling_policy" "cpu_target_tracking" {
+  name                   = "selfhealing-cpu-target-tracking"
+  autoscaling_group_name = aws_autoscaling_group.app.name
+  policy_type            = "TargetTrackingScaling"
+  estimated_instance_warmup = 20
+
+  target_tracking_configuration {
+    predefined_metric_specification {
+      predefined_metric_type = "ASGAverageCPUUtilization"
+    }
+    target_value = 80.0
+  }
 }
