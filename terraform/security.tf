@@ -32,7 +32,7 @@ resource "aws_security_group" "ec2_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["47.15.157.45/32"]
+    cidr_blocks = [var.ssh_allowed_cidr]
   }
 
   egress {
