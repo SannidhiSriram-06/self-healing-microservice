@@ -216,7 +216,7 @@ A working self-healing microservice deployed on AWS (evidence in [`Screenshots/`
 
 * Automatic instance replacement and target isolation on failure (via ASG + ALB health checks)
 * CPU-based auto scaling
-* A working CI pipeline: 9 GitHub Actions runs, dependency and image scans passing with no vulnerable paths found
+* A CI pipeline that ran green in February 2026 (build, test, Docker Hub push, Snyk dependency and image scans, no vulnerable paths found). Runs since then fail at the Docker Hub login step because the `DOCKERHUB_*` repository secrets are no longer set
 
 This project represents a practical implementation of **resilient, cloud-native microservice architecture** — with manual deployment as the current gap toward full continuous deployment.
 
